@@ -1,22 +1,24 @@
-From 43911dd54b6022de84cc9199bd50c51b36bd931f Mon Sep 17 00:00:00 2001
+From 454389dba8527838498fdf5e996fc85d77b1c5bc Mon Sep 17 00:00:00 2001
 From: Yevgeniy Melnichuk <yevgeniy.melnichuk@googlemail.com>
-Date: Sun, 24 Aug 2025 16:03:38 +0200
-Subject: [PATCH] add frontend configuration
+Date: Sat, 20 Dec 2025 15:50:49 +0100
+Subject: [PATCH] init frontend setup (tailwind, esbuild, htmx, lit-html)
 
 ---
- src/main/css/package.json        | 12 ++++++++++
- src/main/css/src/tailwind.css    | 41 ++++++++++++++++++++++++++++++++
- src/main/javascript/package.json | 10 ++++++++
- src/main/javascript/src/index.js |  1 +
- 4 files changed, 64 insertions(+)
+ src/main/css/package.json              | 12 +++++++++
+ src/main/css/src/loading-indicator.css | 35 ++++++++++++++++++++++++++
+ src/main/css/src/tailwind.css          |  7 ++++++
+ src/main/javascript/package.json       | 16 ++++++++++++
+ src/main/javascript/src/index.js       |  1 +
+ 5 files changed, 71 insertions(+)
  create mode 100644 src/main/css/package.json
+ create mode 100644 src/main/css/src/loading-indicator.css
  create mode 100644 src/main/css/src/tailwind.css
  create mode 100644 src/main/javascript/package.json
  create mode 100644 src/main/javascript/src/index.js
 
 diff --git a/src/main/css/package.json b/src/main/css/package.json
 new file mode 100644
-index 0000000..7d371f3
+index 0000000..745fec9
 --- /dev/null
 +++ b/src/main/css/package.json
 @@ -0,0 +1,12 @@
@@ -25,25 +27,19 @@ index 0000000..7d371f3
 +    "tailwind:watch": "npx @tailwindcss/cli -i ./src/tailwind.css -o ../resources/static/style.css --watch"
 +  },
 +  "dependencies": {
-+    "@tailwindcss/cli": "^4.1.11",
-+    "tailwindcss": "^4.1.11"
++    "@tailwindcss/cli": "4.1.x",
++    "tailwindcss": "4.1.x"
 +  },
 +  "devDependencies": {
-+    "@tailwindcss/forms": "^0.5.10"
++    "@tailwindcss/forms": "0.5.x"
 +  }
 +}
-diff --git a/src/main/css/src/tailwind.css b/src/main/css/src/tailwind.css
+diff --git a/src/main/css/src/loading-indicator.css b/src/main/css/src/loading-indicator.css
 new file mode 100644
-index 0000000..c146088
+index 0000000..a4a2cab
 --- /dev/null
-+++ b/src/main/css/src/tailwind.css
-@@ -0,0 +1,41 @@
-+@import "tailwindcss";
-+@source "../../javascript/**/*.js";
-+@source "../../kotlin/**/*.kt";
-+
-+@plugin "@tailwindcss/forms";
-+
++++ b/src/main/css/src/loading-indicator.css
+@@ -0,0 +1,35 @@
 +.loading [data-role="spinner"] {
 +    display: inline;
 +}
@@ -79,20 +75,39 @@ index 0000000..c146088
 +        stroke-dashoffset: -124;
 +    }
 +}
+diff --git a/src/main/css/src/tailwind.css b/src/main/css/src/tailwind.css
+new file mode 100644
+index 0000000..3fa3ebd
+--- /dev/null
++++ b/src/main/css/src/tailwind.css
+@@ -0,0 +1,7 @@
++@import "tailwindcss";
++@source "../../javascript/**/*.js";
++@source "../../kotlin/**/*.kt";
++@source "./loading-indicator.css";
++
++@plugin "@tailwindcss/forms";
++
 diff --git a/src/main/javascript/package.json b/src/main/javascript/package.json
 new file mode 100644
-index 0000000..4b0ce46
+index 0000000..362217a
 --- /dev/null
 +++ b/src/main/javascript/package.json
-@@ -0,0 +1,10 @@
+@@ -0,0 +1,16 @@
 +{
 +  "scripts": {
 +    "esbuild:watch": "esbuild --watch --legal-comments=none --bundle --outfile=../resources/static/script.js src/index.js",
 +    "servce-static-resources": "http-server ../resources/static -c-1 --port 9001"
 +  },
++
++  "dependencies": {
++    "htmx.org": "2.0.x",
++    "lit-html": "3.3.x"
++  },
++
 +  "devDependencies": {
-+    "esbuild": "^0.25.8",
-+    "http-server": "^14.1.1"
++    "esbuild": "0.27.x",
++    "http-server": "14.1.x"
 +  }
 +}
 diff --git a/src/main/javascript/src/index.js b/src/main/javascript/src/index.js
@@ -104,5 +119,5 @@ index 0000000..fb3595d
 +console.log("init")
 \ No newline at end of file
 -- 
-2.39.5 (Apple Git-154)
+2.52.0.windows.1
 
