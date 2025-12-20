@@ -13,3 +13,4 @@ curl https://raw.githubusercontent.com/yevmel/ystack/refs/heads/main/frontend.pa
 * `css` folder under `src/main`
 * [tailwindcss v4](https://tailwindcss.com) and the form plugin, results are written to `src/main/resources/static/style.css`
 * http-server serving `src/main/resources/static` on port 9001 for local development
+* [htmx](https://htmx.org/) and [lit-html](https://lit.dev/docs/libraries/standalone-templates/)
