@@ -1,92 +1,48 @@
-From 454389dba8527838498fdf5e996fc85d77b1c5bc Mon Sep 17 00:00:00 2001
+From 48d862fc4005537e625e737beb8cbdedf19c9436 Mon Sep 17 00:00:00 2001
 From: Yevgeniy Melnichuk <yevgeniy.melnichuk@googlemail.com>
-Date: Sat, 20 Dec 2025 15:50:49 +0100
-Subject: [PATCH] init frontend setup (tailwind, esbuild, htmx, lit-html)
+Date: Sat, 17 Jan 2026 22:31:26 +0100
+Subject: [PATCH] add frontend libs and tooling
 
 ---
- src/main/css/package.json              | 12 +++++++++
- src/main/css/src/loading-indicator.css | 35 ++++++++++++++++++++++++++
- src/main/css/src/tailwind.css          |  7 ++++++
- src/main/javascript/package.json       | 16 ++++++++++++
- src/main/javascript/src/index.js       |  1 +
- 5 files changed, 71 insertions(+)
+ src/main/css/package.json        | 11 +++++++++++
+ src/main/css/src/style.scss      |  7 +++++++
+ src/main/javascript/package.json | 16 ++++++++++++++++
+ src/main/javascript/src/index.js |  1 +
+ 4 files changed, 35 insertions(+)
  create mode 100644 src/main/css/package.json
- create mode 100644 src/main/css/src/loading-indicator.css
- create mode 100644 src/main/css/src/tailwind.css
+ create mode 100644 src/main/css/src/style.scss
  create mode 100644 src/main/javascript/package.json
  create mode 100644 src/main/javascript/src/index.js
 
 diff --git a/src/main/css/package.json b/src/main/css/package.json
 new file mode 100644
-index 0000000..745fec9
+index 0000000..1f17e83
 --- /dev/null
 +++ b/src/main/css/package.json
-@@ -0,0 +1,12 @@
+@@ -0,0 +1,11 @@
 +{
 +  "scripts": {
-+    "tailwind:watch": "npx @tailwindcss/cli -i ./src/tailwind.css -o ../resources/static/style.css --watch"
++    "sass:watch": "sass --load-path=node_modules --watch src/style.scss ../resources/static/style.css"
 +  },
 +  "dependencies": {
-+    "@tailwindcss/cli": "4.1.x",
-+    "tailwindcss": "4.1.x"
++    "dashvar": "^0.4.x"
 +  },
 +  "devDependencies": {
-+    "@tailwindcss/forms": "0.5.x"
++    "sass": "^1.97.x"
 +  }
 +}
-diff --git a/src/main/css/src/loading-indicator.css b/src/main/css/src/loading-indicator.css
+diff --git a/src/main/css/src/style.scss b/src/main/css/src/style.scss
 new file mode 100644
-index 0000000..a4a2cab
+index 0000000..5cd417c
 --- /dev/null
-+++ b/src/main/css/src/loading-indicator.css
-@@ -0,0 +1,35 @@
-+.loading [data-role="spinner"] {
-+    display: inline;
-+}
-+
-+[data-role="spinner"] {
-+    display: none;
-+    animation: rotate 2s linear infinite;
-+    z-index: 2;
-+
-+    & .path {
-+        stroke-linecap: round;
-+        animation: dash 1.5s ease-in-out infinite;
-+    }
-+}
-+
-+@keyframes rotate {
-+    100% {
-+        transform: rotate(360deg);
-+    }
-+}
-+
-+@keyframes dash {
-+    0% {
-+        stroke-dasharray: 1, 150;
-+        stroke-dashoffset: 0;
-+    }
-+    50% {
-+        stroke-dasharray: 90, 150;
-+        stroke-dashoffset: -35;
-+    }
-+    100% {
-+        stroke-dasharray: 90, 150;
-+        stroke-dashoffset: -124;
-+    }
-+}
-diff --git a/src/main/css/src/tailwind.css b/src/main/css/src/tailwind.css
-new file mode 100644
-index 0000000..3fa3ebd
---- /dev/null
-+++ b/src/main/css/src/tailwind.css
++++ b/src/main/css/src/style.scss
 @@ -0,0 +1,7 @@
-+@import "tailwindcss";
-+@source "../../javascript/**/*.js";
-+@source "../../kotlin/**/*.kt";
-+@source "./loading-indicator.css";
++@use "dashvar/dist/base";
++@use "dashvar/dist/dashvar";
 +
-+@plugin "@tailwindcss/forms";
++html, body {
++    height: 100%;
++}
 +
 diff --git a/src/main/javascript/package.json b/src/main/javascript/package.json
 new file mode 100644
@@ -112,12 +68,11 @@ index 0000000..362217a
 +}
 diff --git a/src/main/javascript/src/index.js b/src/main/javascript/src/index.js
 new file mode 100644
-index 0000000..fb3595d
+index 0000000..1cecd1b
 --- /dev/null
 +++ b/src/main/javascript/src/index.js
 @@ -0,0 +1 @@
-+console.log("init")
-\ No newline at end of file
++import {html, render} from 'lit-html'
 -- 
 2.52.0.windows.1
 
